@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Task Tracker — Productivity Engine</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2310b981'><path d='M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z'/></svg>">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="brand">
+        <div class="brand-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="9 11 12 14 22 4"></polyline>
+            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+          </svg>
+        </div>
+        <div>
+          <h1>Task Tracker</h1>
+          <p class="subtitle">Focus, organize, and execute your goals</p>
+        </div>
+      </div>
+      <div class="sync-status" id="sync-status" title="Sync Status">
+        <span class="status-dot"></span>
+        <span class="status-label" id="sync-label">Local Storage</span>
+      </div>
+    </header>
+
+    <!-- Task Input Form -->
+    <section class="card input-card">
+      <form id="task-form" class="task-form" autocomplete="off">
+        <div class="input-wrapper">
+          <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+          <input
+            type="text"
+            id="task-input"
+            class="task-input"
+            placeholder="Add a new task (e.g. Audit API routes, write integration tests)…"
+            maxlength="200"
+            required
+          />
+        </div>
+        <button type="submit" id="add-btn" class="btn btn-primary">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="btn-icon">
+            <path d="M12 5v14M5 12h14"/>
+          </svg>
+          Add Task
+        </button>
+      </form>
+    </section>
+
+    <!-- Controls & Filters Bar -->
+    <section class="controls-bar">
+      <div class="filter-tabs" role="tablist" aria-label="Task Filters">
+        <button class="filter-btn active" data-filter="all" role="tab" aria-selected="true">
+          All <span class="badge" id="badge-all">0</span>
+        </button>
+        <button class="filter-btn" data-filter="pending" role="tab" aria-selected="false">
+          Pending <span class="badge" id="badge-pending">0</span>
+        </button>
+        <button class="filter-btn" data-filter="completed" role="tab" aria-selected="false">
+          Completed <span class="badge" id="badge-completed">0</span>
+        </button>
+      </div>
+
+      <div class="actions">
+        <button id="clear-completed-btn" class="btn btn-ghost btn-sm" title="Remove all completed tasks">
+          Clear Completed
+        </button>
+      </div>
+    </section>
+
+    <!-- Task List Container -->
+    <main class="card list-card">
+      <ul id="task-list" class="task-list" aria-live="polite"></ul>
+
+      <!-- Empty State -->
+      <div id="empty-state" class="empty-state">
+        <div class="empty-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/>
+            <rect x="9" y="3" width="6" height="4" rx="1"/>
+            <path d="m9 14 2 2 4-4"/>
+          </svg>
+        </div>
+        <h3>No tasks found</h3>
+        <p id="empty-description">You have no tasks in this view. Type above and press Enter to create one!</p>
+      </div>
+    </main>
+
+    <!-- Footer Stats -->
+    <footer class="app-footer">
+      <div class="stats-text" id="stats-text">
+        0 tasks remaining
+      </div>
+      <div class="progress-bar-container" title="Completion Progress">
+        <div id="progress-bar" class="progress-bar" style="width: 0%;"></div>
+      </div>
+      <div class="progress-percent" id="progress-percent">0%</div>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

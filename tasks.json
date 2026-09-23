@@ -1,0 +1,20 @@
+[
+  {
+    "id": "seed-1",
+    "title": "Configure background monitoring engine",
+    "completed": true,
+    "createdAt": 1727140000000
+  },
+  {
+    "id": "seed-2",
+    "title": "Build lightweight Task Tracker frontend and API",
+    "completed": true,
+    "createdAt": 1727142000000
+  },
+  {
+    "id": "seed-3",
+    "title": "Verify file debounce, diff calculation, and shadow git",
+    "completed": false,
+    "createdAt": 1727143500000
+  }
+]
