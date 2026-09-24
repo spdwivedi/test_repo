@@ -24,6 +24,7 @@ import sys
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from typing import Any
+from urllib.parse import parse_qs, urlparse
 
 logging.basicConfig(
     level=logging.INFO,
@@ -40,18 +41,27 @@ DEFAULT_TASKS = [
         "id": "seed-1",
         "title": "Configure background monitoring engine",
         "completed": True,
+        "priority": "medium",
+        "dueDate": "2026-09-23",
+        "tags": ["monitoring", "backend"],
         "createdAt": 1727140000000,
     },
     {
         "id": "seed-2",
         "title": "Build lightweight Task Tracker frontend and API",
         "completed": True,
+        "priority": "low",
+        "dueDate": "2026-09-24",
+        "tags": ["frontend", "api"],
         "createdAt": 1727142000000,
     },
     {
         "id": "seed-3",
         "title": "Verify file debounce, diff calculation, and shadow git",
         "completed": False,
+        "priority": "high",
+        "dueDate": "2026-09-26",
+        "tags": ["testing", "urgent"],
         "createdAt": 1727143500000,
     },
 ]
@@ -92,6 +102,7 @@ class TaskRequestHandler(BaseHTTPRequestHandler):
         self.send_header("Access-Control-Allow-Origin", "*")
         self.send_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
         self.send_header("Access-Control-Allow-Headers", "Content-Type")
+        self.send_header("Access-Control-Expose-Headers", "Content-Disposition")
 
     def _send_json(self, data: Any, status: int = 200) -> None:
         payload = json.dumps(data, indent=2).encode("utf-8")
@@ -113,13 +124,61 @@ class TaskRequestHandler(BaseHTTPRequestHandler):
     # ------------------------------------------------------------------
 
     def do_GET(self) -> None:
-        url_path = self.path.split("?")[0].rstrip("/")
+        parsed_url = urlparse(self.path)
+        url_path = parsed_url.path.rstrip("/")
         if not url_path:
             url_path = "/"
 
-        # API: /api/tasks
+        # API: /api/tasks/export -> Downloadable JSON backup
+        if url_path == "/api/tasks/export":
+            tasks = load_tasks()
+            payload = json.dumps(tasks, indent=2).encode("utf-8")
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json; charset=utf-8")
+            self.send_header("Content-Disposition", 'attachment; filename="tasks-backup.json"')
+            self.send_header("Content-Length", str(len(payload)))
+            self._send_cors_headers()
+            self.end_headers()
+            try:
+                self.wfile.write(payload)
+            except (BrokenPipeError, ConnectionResetError):
+                pass
+            return
+
+        # API: /api/tasks (supports optional query filters: ?priority=high&tag=work)
         if url_path == "/api/tasks":
             tasks = load_tasks()
+            query_params = parse_qs(parsed_url.query)
+
+            # Optional filter: priority (low, medium, high)
+            if "priority" in query_params:
+                p_filter = query_params["priority"][0].strip().lower()
+                if p_filter and p_filter != "all":
+                    tasks = [
+                        t for t in tasks
+                        if str(t.get("priority", "medium")).strip().lower() == p_filter
+                    ]
+
+            # Optional filter: tag (e.g. work, urgent, #work)
+            if "tag" in query_params:
+                raw_tag = query_params["tag"][0].strip().lower().lstrip("#")
+                if raw_tag and raw_tag != "all":
+                    tasks = [
+                        t for t in tasks
+                        if any(
+                            str(tg).strip().lower().lstrip("#") == raw_tag
+                            for tg in t.get("tags", [])
+                        )
+                    ]
+
+            # Optional filter: status (pending, completed, all)
+            if "status" in query_params:
+                s_filter = query_params["status"][0].strip().lower()
+                if s_filter == "completed":
+                    tasks = [t for t in tasks if t.get("completed", False)]
+                elif s_filter == "pending":
+                    tasks = [t for t in tasks if not t.get("completed", False)]
+
             self._send_json(tasks)
             return
 

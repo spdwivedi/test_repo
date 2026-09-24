@@ -3,18 +3,60 @@
     "id": "seed-1",
     "title": "Configure background monitoring engine",
     "completed": true,
+    "priority": "medium",
+    "dueDate": "2026-09-22",
+    "tags": [
+      "monitoring",
+      "backend"
+    ],
     "createdAt": 1727140000000
   },
   {
     "id": "seed-2",
     "title": "Build lightweight Task Tracker frontend and API",
     "completed": true,
+    "priority": "low",
+    "dueDate": "2026-09-23",
+    "tags": [
+      "frontend",
+      "api"
+    ],
     "createdAt": 1727142000000
   },
   {
     "id": "seed-3",
     "title": "Verify file debounce, diff calculation, and shadow git",
     "completed": false,
+    "priority": "high",
+    "dueDate": "2026-09-26",
+    "tags": [
+      "testing",
+      "urgent"
+    ],
     "createdAt": 1727143500000
+  },
+  {
+    "id": "seed-4",
+    "title": "Audit security headers and token expiration",
+    "completed": false,
+    "priority": "high",
+    "dueDate": "2026-09-21",
+    "tags": [
+      "security",
+      "urgent"
+    ],
+    "createdAt": 1727144000000
+  },
+  {
+    "id": "seed-5",
+    "title": "Publish API documentation and user guide",
+    "completed": false,
+    "priority": "medium",
+    "dueDate": "2026-09-28",
+    "tags": [
+      "work",
+      "docs"
+    ],
+    "createdAt": 1727144500000
   }
 ]

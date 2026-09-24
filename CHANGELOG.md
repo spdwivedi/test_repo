@@ -1,5 +1,35 @@
 # Changelog
 
+### [2026-09-24 15:26 UTC] feat(ui/server): enhance task management with metadata and analytics
+
+#### Key Highlights
+- Added support for task priorities, due dates, and category tags
+- Integrated a new analytics drawer for improved productivity tracking
+- Enhanced server.py with robust query-based filtering and JSON export functionality
+- Refactored UI components for better responsiveness and theme consistency
+
+#### Files Modified
+.sf/orgs/00Dfj00000eklPtEAI/metadata-catalog/catalog.json, .sf/orgs/00Dfj00000eklPtEAI/metadata-catalog/catalog.json.__staging__, CHANGELOG.md, app.js, index.html, server.py, style.css, tasks.json
+
+#### Functional & Architectural Impact
+This release completes the Phase 2 enhancement of the Task Tracker, transitioning the application from a basic list to a comprehensive productivity suite. The architecture now supports granular task classification and metadata-driven filtering, while the backend server has been upgraded to handle complex query parameters without external dependencies. These changes ensure better data portability and provide users with actionable insights through the new analytics interface, all while maintaining strict backward compatibility with existing task data structures.
+
+### [2026-09-24 15:15 UTC] feat(phase-2): implement task priorities, due dates, category tags, analytics drawer, and API export
+
+#### Key Highlights
+- Added task priority selection (Low: emerald, Medium: amber, High: rose) and due-date picker in input card.
+- Implemented colored priority badges and formatted due-date tags on task items with overdue state detection.
+- Introduced category tag assignment (via tags input and inline hashtags) and dynamic multi-criteria filter chips.
+- Built collapsible "Analytics & Metrics" summary drawer showing completion percentage, high-priority pending counters, and overdue task alerts.
+- Extended backend REST API (`server.py`) with query filtering (`?priority=high&tag=work&status=pending`) and downloadable backup endpoint (`GET /api/tasks/export`).
+- Ensured strict backwards compatibility for existing `tasks.json` schemas.
+
+#### Files Modified
+CHANGELOG.md, app.js, index.html, server.py, style.css, tasks.json
+
+#### Functional & Architectural Impact
+Elevates the Task Tracker into an advanced productivity tool. The frontend provides granular classification with priority badges, deadline tracking, category tags, dynamic filtering, and a collapsible metrics drawer. The zero-dependency Python REST server handles query-based filtering and instant JSON backups while maintaining complete backwards compatibility with legacy tasks.
+
 ### [2026-09-23 23:58 UTC] feat(tracker): implement full-stack task tracker and REST server
 
 #### Key Highlights
